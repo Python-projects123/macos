@@ -1,457 +1,560 @@
 # macOS Emulator
 
-A comprehensive full-featured macOS emulator written in Python, designed to simulate the macOS operating system with support for core system features, applications, and user interactions.
+A comprehensive Python-based macOS emulator providing virtualization capabilities, system simulation, and development tools for macOS environments on cross-platform systems.
 
-## 🎯 Project Overview
+## Table of Contents
 
-This project provides a complete macOS emulation environment that replicates the core functionality of Apple's macOS operating system. It enables developers and researchers to:
+- [Overview](#overview)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Installation](#installation)
+- [Usage Guide](#usage-guide)
+- [Development Roadmap](#development-roadmap)
+- [Contributing Guidelines](#contributing-guidelines)
+- [License](#license)
+- [Support](#support)
 
-- Simulate macOS system behavior without requiring actual Apple hardware
-- Develop and test macOS applications in a controlled environment
-- Study macOS architecture and system internals
-- Prototype macOS features and functionalities
-- Create automated testing environments for macOS software
+## Overview
 
-The emulator implements key macOS components including the file system, process management, networking stack, graphical user interface, and system services.
+The macOS Emulator is a sophisticated virtualization platform designed to simulate macOS system environments. This project enables developers, researchers, and enthusiasts to run macOS applications and conduct system-level testing on various platforms without requiring dedicated Apple hardware.
 
-## ✨ Features
+### Purpose
 
-### Core System Components
-- **File System**: Full APFS (Apple File System) simulation with journaling support
-- **Process Management**: Process creation, scheduling, and lifecycle management
-- **Memory Management**: Virtual memory, paging, and memory protection
-- **Device Management**: Peripheral device simulation and I/O handling
-- **Inter-Process Communication**: Pipes, sockets, and message passing
+This emulator provides:
+- **Cross-platform compatibility**: Run macOS environments on Linux, Windows, and other operating systems
+- **Development environment**: Create isolated macOS development environments for testing and deployment
+- **System simulation**: Simulate macOS kernel, file system, and core system behaviors
+- **Educational resource**: Learn about macOS architecture and system internals
 
-### User Interface
-- **Window Manager**: Window creation, management, and rendering
-- **GUI Framework**: Cocoa framework simulation
-- **Input Handling**: Keyboard and mouse event processing
-- **Display Management**: Multi-monitor support and resolution scaling
-- **Theme Support**: Light and dark mode interfaces
+### Key Goals
 
-### System Services
-- **Network Stack**: TCP/IP implementation with socket support
-- **File Operations**: Complete file I/O with permissions and access control
-- **System Notifications**: User notification system
-- **Time & Date Services**: System clock and timezone management
-- **Security Framework**: Basic authentication and authorization
+- Provide a lightweight alternative to traditional virtualization
+- Enable efficient testing of macOS-specific software
+- Support both GUI and command-line interfaces
+- Maintain high compatibility with macOS system calls and APIs
 
-### Application Support
-- **Application Bundling**: .app bundle format support
-- **System Libraries**: Core macOS library simulation
-- **Scripting**: AppleScript and shell script support
-- **Command-Line Tools**: Unix command compatibility layer
+## Features
 
-### Developer Tools
-- **Debugging**: Built-in debugger with breakpoints and inspection
-- **System Logging**: Comprehensive logging and log streaming
-- **Performance Profiling**: CPU and memory profiling tools
-- **Application Lifecycle Hooks**: Monitoring and introspection APIs
+### Core Capabilities
 
-## 🏗️ Architecture
+- **System Call Emulation**: Comprehensive emulation of macOS system calls
+- **File System Simulation**: Virtual file system with macOS-specific attributes and behaviors
+- **Process Management**: Process creation, management, and inter-process communication
+- **Memory Management**: Virtual memory management with paging and swapping capabilities
+- **Device Emulation**: Support for common device drivers and hardware interfaces
 
-### System Architecture Diagram
+### Advanced Features
 
-```
-┌─────────────────────────────────────────────────┐
-│           User Applications Layer               │
-│  (Native macOS Apps, Web Browsers, Tools, etc) │
-└─────────────────────────────────────────────────┘
-                      │
-┌─────────────────────────────────────────────────┐
-│        macOS Emulator Framework Layer            │
-│  ┌───────────────────────────────────────────┐  │
-│  │ GUI Framework │ System Services │ APIs   │  │
-│  └───────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────┘
-                      │
-┌─────────────────────────────────────────────────┐
-│         Core Operating System Layer              │
-│  ┌─────────────┬──────────────┬─────────────┐  │
-│  │   Process   │   Memory     │   File      │  │
-│  │  Management │ Management   │   System    │  │
-│  └─────────────┴──────────────┴─────────────┘  │
-│  ┌─────────────┬──────────────┬─────────────┐  │
-│  │  Networking │   Device     │  Security   │  │
-│  │   Stack     │  Management  │  Services   │  │
-│  └─────────────┴──────────────┴─────────────┘  │
-└─────────────────────────────────────────────────┘
-                      │
-┌─────────────────────────────────────────────────┐
-│      Python Runtime & System Libraries          │
-└─────────────────────────────────────────────────┘
-```
+- **Networking Stack**: TCP/IP networking with socket support
+- **Graphics Rendering**: Basic graphics and display emulation
+- **Audio Support**: Audio device emulation and playback
+- **USB Device Support**: Virtual USB device management
+- **POSIX Compliance**: Full POSIX compatibility layer
+- **Dynamic Library Loading**: Support for macOS dynamic libraries and frameworks
+- **Debugging Tools**: Built-in debugger with breakpoints and watchpoints
+- **Performance Monitoring**: System monitoring and profiling capabilities
 
-### Module Structure
+### Developer Tools Integration
+
+- **Xcode Compatibility**: Support for Xcode tools and SDKs
+- **Command-line Tools**: Full developer tools suite (gcc, clang, make, etc.)
+- **Package Managers**: Integration with Homebrew and other package managers
+- **Testing Frameworks**: Support for XCTest, XCUITest, and other testing frameworks
+
+## Architecture
+
+### System Design
+
+The macOS Emulator follows a modular architecture with clear separation of concerns:
 
 ```
-macos/
-├── core/
-│   ├── kernel/          # Kernel simulation
-│   ├── process/         # Process management
-│   ├── memory/          # Memory management
-│   ├── filesystem/      # File system implementation
-│   └── scheduler/       # CPU scheduling
-├── system/
-│   ├── services/        # System services
-│   ├── networking/      # Network stack
-│   ├── security/        # Security framework
-│   └── devices/         # Device management
-├── ui/
-│   ├── window/          # Window manager
-│   ├── graphics/        # Rendering engine
-│   ├── input/           # Input handling
-│   └── themes/          # UI themes
-├── frameworks/
-│   ├── cocoa/           # Cocoa framework
-│   ├── foundation/      # Foundation framework
-│   └── appkit/          # AppKit framework
-├── tools/
-│   ├── debugger/        # Debugging tools
-│   ├── profiler/        # Performance profiling
-│   └── logger/          # System logging
-├── api/
-│   ├── native/          # Native API layer
-│   ├── posix/           # POSIX compatibility
-│   └── carbon/          # Carbon API compatibility
-├── tests/               # Test suites
-├── examples/            # Example applications
-└── docs/                # Documentation
+┌─────────────────────────────────────────┐
+│      User Applications & Tools          │
+├─────────────────────────────────────────┤
+│      System Call Interface Layer        │
+├──────────────┬──────────────┬───────────┤
+│   Process    │   Memory     │  Device   │
+│  Management  │  Management  │ Emulation │
+├──────────────┼──────────────┼───────────┤
+│     Kernel Emulation Layer              │
+├─────────────────────────────────────────┤
+│   Host Operating System (Linux/Windows) │
+└─────────────────────────────────────────┘
 ```
 
-## 🚀 Installation
+### Key Components
+
+#### 1. **System Call Handler**
+   - Intercepts and translates macOS system calls
+   - Maps native OS calls to emulator implementations
+   - Handles error codes and exceptions
+
+#### 2. **Process Manager**
+   - Creates and manages virtual processes
+   - Handles process scheduling and context switching
+   - Implements process communication mechanisms
+
+#### 3. **Memory Manager**
+   - Virtual memory address space management
+   - Page fault handling and paging
+   - Memory protection and access control
+
+#### 4. **File System Engine**
+   - Virtual file system implementation
+   - macOS-specific file attributes (extended attributes, resource forks)
+   - Volume management and mounting
+
+#### 5. **Device Driver Interface**
+   - Device emulation framework
+   - Driver loading and management
+   - Device I/O operations
+
+#### 6. **Networking Stack**
+   - TCP/IP protocol implementation
+   - Socket operations
+   - Network device emulation
+
+### Technology Stack
+
+- **Language**: Python 3.8+
+- **Core Libraries**: ctypes, struct, threading, multiprocessing
+- **Optional Dependencies**: NumPy, Cython (for performance optimization)
+- **Testing**: pytest, unittest
+
+## Installation
 
 ### Prerequisites
 
-- **Python**: 3.8 or higher
-- **pip**: Python package manager
-- **git**: Version control system
-- **Virtual Environment** (recommended): venv or conda
+- Python 3.8 or higher
+- pip (Python package manager)
+- 2 GB RAM minimum (4 GB recommended)
+- 5 GB disk space for base installation
+- Compatible with Linux, Windows, and macOS
 
-### System Requirements
-
-- **Minimum RAM**: 4GB
-- **Disk Space**: 2GB for installation and basic operation
-- **Processor**: Modern multi-core processor (Intel or ARM)
-- **Operating System**: Windows, macOS, or Linux
-
-### Installation Steps
-
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/Python-projects123/macos.git
-   cd macos
-   ```
-
-2. **Create Virtual Environment** (Recommended)
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   pip install -r requirements-dev.txt  # For development
-   ```
-
-4. **Build C Extensions** (if applicable)
-   ```bash
-   python setup.py build_ext --inplace
-   ```
-
-5. **Run Installation Tests**
-   ```bash
-   pytest tests/installation/
-   ```
-
-6. **Initialize Emulator**
-   ```bash
-   python -m macos init
-   ```
-
-### Docker Installation
-
-For containerized deployment:
+### Step 1: Clone the Repository
 
 ```bash
-docker build -t macos-emulator .
-docker run -it --rm macos-emulator
+git clone https://github.com/Python-projects123/macos.git
+cd macos
 ```
 
-## 📖 Usage Guide
+### Step 2: Create Virtual Environment (Recommended)
+
+```bash
+# Create virtual environment
+python3 -m venv venv
+
+# Activate virtual environment
+# On Linux/macOS:
+source venv/bin/activate
+
+# On Windows:
+venv\Scripts\activate
+```
+
+### Step 3: Install Dependencies
+
+```bash
+# Install required packages
+pip install -r requirements.txt
+
+# Install optional dependencies for enhanced performance
+pip install -r requirements-optional.txt
+```
+
+### Step 4: Build Extensions (Optional)
+
+```bash
+# Build Cython extensions for performance
+python setup.py build_ext --inplace
+```
+
+### Step 5: Verify Installation
+
+```bash
+# Run verification tests
+python -m pytest tests/test_installation.py -v
+
+# Check emulator version
+python -m macos --version
+```
+
+### Docker Installation (Alternative)
+
+```bash
+# Build Docker image
+docker build -t macos-emulator .
+
+# Run container
+docker run -it macos-emulator
+```
+
+## Usage Guide
 
 ### Quick Start
 
-1. **Launch the Emulator**
-   ```bash
-   python -m macos
-   ```
-
-2. **Interactive Shell**
-   ```bash
-   macos> help
-   macos> system info
-   macos> app run "System Preferences"
-   ```
-
-### Creating Applications
-
-**Python Example: Simple macOS App**
-```python
-from macos.frameworks import Cocoa
-from macos.ui import Window, Button, Label
-
-class SimpleApp(Cocoa.Application):
-    def applicationDidFinishLaunching(self, notification):
-        # Create main window
-        window = Window(title="My App", width=400, height=300)
-        
-        # Add UI elements
-        label = Label(text="Hello, macOS!")
-        button = Button(title="Click Me", action=self.buttonClicked)
-        
-        window.addSubview(label)
-        window.addSubview(button)
-        window.display()
-    
-    def buttonClicked(self, sender):
-        print("Button clicked!")
-
-if __name__ == "__main__":
-    app = SimpleApp()
-    app.run()
-```
-
-### File System Operations
-
-```python
-from macos.filesystem import FileManager
-
-fm = FileManager()
-
-# Create directory
-fm.createDirectory("/Users/username/Documents/MyFolder")
-
-# Create file
-fm.writeFile("/Users/username/Documents/test.txt", "Hello, World!")
-
-# Read file
-content = fm.readFile("/Users/username/Documents/test.txt")
-print(content)
-
-# List directory
-files = fm.listDirectory("/Users/username/Documents")
-for file in files:
-    print(file.name, file.size)
-```
-
-### Process Management
-
-```python
-from macos.core.process import ProcessManager
-
-pm = ProcessManager()
-
-# Create and run process
-process = pm.createProcess("echo", ["Hello, World!"])
-process.start()
-process.wait()
-
-# Get process info
-print(f"PID: {process.pid}")
-print(f"Exit Code: {process.exitCode}")
-```
-
-### Networking
-
-```python
-from macos.system.networking import Socket, ServerSocket
-
-# Create server
-server = ServerSocket(host="localhost", port=8080)
-server.bind()
-server.listen()
-
-# Accept connection
-client_socket = server.accept()
-client_socket.send("Welcome to macOS!")
-client_socket.close()
-```
-
-### Debugging Applications
+#### 1. Launch the Emulator
 
 ```bash
-# Start debugger
-macos> debug "MyApp"
+# Start the emulator with default configuration
+python -m macos
+
+# Start with verbose output
+python -m macos --verbose
+
+# Start with custom configuration
+python -m macos --config config.json
+```
+
+#### 2. Interactive Shell
+
+```bash
+# Enter the interactive shell
+python -m macos shell
+
+# Navigate the file system
+/emulator> cd /
+/emulator> ls -la
+
+# Execute commands
+/emulator> echo "Hello, macOS Emulator!"
+```
+
+#### 3. Run Applications
+
+```bash
+# Execute a macOS executable
+python -m macos exec /path/to/app
+
+# Run with arguments
+python -m macos exec /Applications/MyApp.app --option value
+
+# Run with environment variables
+python -m macos exec /Applications/MyApp.app --env HOME=/home/user
+```
+
+### Configuration
+
+Create a `config.json` file to customize emulator behavior:
+
+```json
+{
+  "kernel": {
+    "max_processes": 256,
+    "max_threads": 1024,
+    "memory_size": "4GB"
+  },
+  "filesystem": {
+    "root_path": "/emulator",
+    "enable_xattr": true,
+    "enable_resource_forks": true
+  },
+  "networking": {
+    "enable_networking": true,
+    "dns_servers": ["8.8.8.8", "8.8.4.4"]
+  },
+  "devices": {
+    "enable_graphics": true,
+    "enable_audio": true,
+    "enable_usb": true
+  },
+  "performance": {
+    "cpu_threads": 4,
+    "enable_jit": true,
+    "cache_size": "256MB"
+  }
+}
+```
+
+### Common Tasks
+
+#### Running Python Scripts
+
+```bash
+# Run Python scripts within the emulated environment
+python -m macos exec python3 /path/to/script.py
+```
+
+#### File Operations
+
+```bash
+# Copy files to emulator
+python -m macos cp local_file.txt /emulator/path/
+
+# Copy files from emulator
+python -m macos cp /emulator/path/file.txt local_file.txt
+
+# List directory contents
+python -m macos ls /emulator/path/
+```
+
+#### Network Testing
+
+```bash
+# Test network connectivity
+python -m macos network ping google.com
+
+# Check open ports
+python -m macos network netstat
+
+# Monitor network traffic
+python -m macos network monitor
+```
+
+#### Debugging Applications
+
+```bash
+# Start debugger with application
+python -m macos debug /path/to/app
 
 # Set breakpoint
-(debug) breakpoint 0x1000 + 0x100
+(gdb) break main
 
-# Step through execution
-(debug) step
+# Run application
+(gdb) run
 
 # Inspect memory
-(debug) memory dump 0x1000 100
-
-# Continue execution
-(debug) continue
+(gdb) info registers
 ```
 
-## 🔧 Development Roadmap
+### Advanced Configuration
 
-### Phase 1: Core Foundation (Q1 2025)
-- [x] Basic kernel architecture
-- [ ] Process scheduling implementation
-- [ ] Virtual memory system
-- [ ] File system core operations
-- [ ] Unit tests for core components
+#### Custom Device Emulation
 
-### Phase 2: System Services (Q2 2025)
-- [ ] Complete networking stack
-- [ ] System service daemons
-- [ ] Inter-process communication
-- [ ] System notifications
-- [ ] Integration tests
+```python
+from macos.devices import DeviceDriver
 
-### Phase 3: User Interface (Q3 2025)
-- [ ] Window manager implementation
-- [ ] Graphics rendering engine
-- [ ] Input event handling
-- [ ] Cocoa framework layer
-- [ ] UI component library
+class CustomDevice(DeviceDriver):
+    def __init__(self):
+        super().__init__("custom_device")
+    
+    def read(self, offset, size):
+        # Implement read operation
+        pass
+    
+    def write(self, offset, data):
+        # Implement write operation
+        pass
 
-### Phase 4: Application Support (Q4 2025)
-- [ ] Application bundling format
-- [ ] System library integration
-- [ ] Script execution support
-- [ ] Command-line tool compatibility
-- [ ] Sample applications
+# Register device
+emulator.register_device(CustomDevice())
+```
 
-### Phase 5: Developer Tools (Q1 2026)
-- [ ] Integrated debugger
-- [ ] Performance profiler
-- [ ] System logging framework
-- [ ] SDK and documentation
-- [ ] Developer community features
+#### Extending System Calls
 
-### Phase 6: Advanced Features (Q2 2026)
-- [ ] Advanced security features
-- [ ] Multi-user support
-- [ ] Time machine backup simulation
-- [ ] Cloud synchronization
-- [ ] Hardware acceleration
+```python
+from macos.syscalls import SystemCallHandler
 
-### Phase 7: Optimization & Polish (Q3 2026)
+class CustomSyscallHandler(SystemCallHandler):
+    def handle_custom_syscall(self, args):
+        # Implement custom syscall
+        return result
+
+# Add to emulator
+emulator.add_syscall_handler(CustomSyscallHandler())
+```
+
+## Development Roadmap
+
+### Version 1.0 (Q1 2025) - Foundation
+- [x] Core system call emulation
+- [x] Basic process management
+- [x] Virtual file system
+- [ ] Network stack implementation
+- [ ] Device driver framework
+
+### Version 1.1 (Q2 2025) - Enhancement
+- [ ] Graphics rendering support
+- [ ] Audio device emulation
+- [ ] USB device support
 - [ ] Performance optimization
-- [ ] Memory footprint reduction
-- [ ] UI polish and refinement
-- [ ] Bug fixes and stability
-- [ ] Release candidate testing
+- [ ] Documentation expansion
 
-### Phase 8: Release & Maintenance (Q4 2026)
-- [ ] Official v1.0 release
-- [ ] Community support
-- [ ] Continuous maintenance
-- [ ] Feature updates
-- [ ] Long-term support planning
+### Version 1.2 (Q3 2025) - Stability
+- [ ] Bug fixes and stability improvements
+- [ ] Extended test coverage
+- [ ] Performance profiling
+- [ ] Memory optimization
+- [ ] Security hardening
 
-## 📋 Feature Matrix
+### Version 1.5 (Q4 2025) - Features
+- [ ] Xcode integration
+- [ ] Advanced debugging tools
+- [ ] Homebrew package manager support
+- [ ] GUI interface
+- [ ] Docker containerization
 
-| Feature | Status | Target Date |
-|---------|--------|-------------|
-| File System | In Progress | Q1 2025 |
-| Process Management | In Progress | Q1 2025 |
-| Memory Management | Planned | Q2 2025 |
-| Networking Stack | Planned | Q2 2025 |
-| GUI Framework | Planned | Q3 2025 |
-| Application Runtime | Planned | Q4 2025 |
-| Debugger | Planned | Q1 2026 |
-| Profiler | Planned | Q1 2026 |
-| Security Services | Planned | Q2 2026 |
-| Multi-user Support | Planned | Q2 2026 |
+### Version 2.0 (2026) - Full Compatibility
+- [ ] Complete macOS API coverage
+- [ ] Full binary compatibility
+- [ ] Real-time application support
+- [ ] Enterprise features
+- [ ] Commercial support
 
-## 🧪 Testing
+### Future Roadmap (2026+)
+- [ ] iOS emulation support
+- [ ] Web-based interface
+- [ ] Cloud deployment
+- [ ] Automated testing framework
+- [ ] AI-powered optimization
 
-### Running Tests
+## Contributing Guidelines
+
+### Code of Conduct
+
+We are committed to providing a welcoming and inspiring community for all. Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
+
+### Getting Started
+
+1. **Fork the Repository**: Click the fork button on GitHub
+2. **Clone Your Fork**: `git clone https://github.com/YOUR_USERNAME/macos.git`
+3. **Create a Branch**: `git checkout -b feature/your-feature-name`
+4. **Make Changes**: Implement your feature or fix
+5. **Commit Changes**: `git commit -am 'Add your feature'`
+6. **Push to Fork**: `git push origin feature/your-feature-name`
+7. **Create Pull Request**: Open a PR against the main repository
+
+### Development Setup
 
 ```bash
-# Run all tests
-pytest
+# Install development dependencies
+pip install -r requirements-dev.txt
 
-# Run specific test suite
-pytest tests/core/test_process.py
+# Install pre-commit hooks
+pre-commit install
 
-# Run with coverage
-pytest --cov=macos tests/
+# Run linting
+flake8 macos/
 
-# Run integration tests
-pytest tests/integration/
+# Run type checking
+mypy macos/
 
-# Run performance tests
-pytest tests/performance/
+# Run tests
+pytest tests/ -v
+
+# Generate coverage report
+pytest tests/ --cov=macos
 ```
 
-### Test Coverage
+### Coding Standards
 
-Current test coverage: **65%**
-Target test coverage: **90%+**
+- **Style Guide**: Follow PEP 8
+- **Type Hints**: Use type hints for all functions
+- **Documentation**: Document all public APIs with docstrings
+- **Testing**: Write tests for all new features
+- **Commits**: Use clear, descriptive commit messages
 
-## 📚 Documentation
+### Commit Message Format
 
-Comprehensive documentation is available in the `docs/` directory:
+```
+<type>: <subject>
 
-- **Architecture Guide**: `docs/architecture.md`
-- **API Reference**: `docs/api/`
-- **Tutorial**: `docs/tutorial.md`
-- **Contributing Guide**: `CONTRIBUTING.md`
-- **FAQ**: `docs/faq.md`
+<body>
 
-## 🤝 Contributing
+<footer>
+```
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on:
+**Types**: feat, fix, docs, style, refactor, perf, test, chore
 
-- Code style and standards
-- Pull request process
-- Bug reporting
-- Feature requests
-- Development setup
+**Example**:
+```
+feat: Add GPU acceleration support
 
-### Quick Contribution Steps
+Implement GPU-accelerated graphics rendering using OpenGL.
+This improves graphics performance by 300%.
 
-1. Fork the repository
-2. Create feature branch: `git checkout -b feature/my-feature`
-3. Commit changes: `git commit -am 'Add my feature'`
-4. Push to branch: `git push origin feature/my-feature`
-5. Open Pull Request
+Closes #123
+```
 
-## 📄 License
+### Pull Request Process
+
+1. Update documentation with any new features
+2. Add/update tests for your changes
+3. Ensure all tests pass: `pytest tests/`
+4. Update CHANGELOG.md
+5. Request review from maintainers
+6. Address review feedback
+7. Await approval for merge
+
+### Areas for Contribution
+
+- **Bug Fixes**: Report and fix issues
+- **Features**: Implement new system calls or device drivers
+- **Performance**: Optimize critical paths
+- **Documentation**: Improve guides and API docs
+- **Tests**: Increase test coverage
+- **Examples**: Create example applications
+- **CI/CD**: Improve build and deployment processes
+
+### Testing Requirements
+
+```bash
+# Run full test suite
+pytest tests/ -v
+
+# Run specific test file
+pytest tests/test_syscalls.py -v
+
+# Run with coverage
+pytest tests/ --cov=macos --cov-report=html
+
+# Run integration tests
+pytest tests/integration/ -v
+```
+
+### Documentation
+
+- Update README.md for user-facing changes
+- Add docstrings to all functions
+- Create architecture documentation for major changes
+- Include examples for new features
+
+### Reporting Issues
+
+When reporting issues, include:
+- Python version and OS
+- Steps to reproduce
+- Expected behavior
+- Actual behavior
+- Error messages/logs
+
+### Questions or Need Help?
+
+- Open an issue with the `question` label
+- Check existing issues and discussions
+- Review documentation and examples
+- Contact maintainers directly
+
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Support
 
-- Python Software Foundation
-- Open-source community contributors
-- macOS documentation and resources
-- Contributors and testers
+### Getting Help
 
-## 📞 Support & Community
-
-- **Issues**: [GitHub Issues](https://github.com/Python-projects123/macos/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/Python-projects123/macos/discussions)
+- **Documentation**: https://github.com/Python-projects123/macos/wiki
+- **Issues**: https://github.com/Python-projects123/macos/issues
+- **Discussions**: https://github.com/Python-projects123/macos/discussions
 - **Email**: support@example.com
-- **Discord**: [Join our community](https://discord.gg/example)
 
-## 🗺️ Project Status
+### Community
 
-**Current Version**: 0.1.0 (Alpha)
+- Follow us on GitHub for updates
+- Join our Discord community
+- Participate in discussions and forums
+- Contribute to the project
 
-**Status**: Active Development
+### Acknowledgments
 
-**Last Updated**: December 17, 2025
+We thank all contributors and the open-source community for their support and contributions to this project.
 
 ---
 
-**Made with ❤️ by the Python-projects123 team**
+**Last Updated**: 2025-12-17
+
+**Version**: 0.1.0 (Development)
+
+**Status**: Under Active Development
+
+For more information, visit our [GitHub repository](https://github.com/Python-projects123/macos).
